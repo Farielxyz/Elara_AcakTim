@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elara Acak Tim 🌸</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --bg:        #FFF8F0;
+  --bg2:       #FFF0E6;
+  --surface:   #FFFFFF;
+  --border:    #DCAE96;
+  --border2:   #E8C9B8;
+  --text:      #3E2723;
+  --muted:     #8D6E63;
+  --accent:    #FF7043;
+  --accent2:   #FF9800;
+  --pink:      #F48FB1;
+  --blue:      #81D4FA;
+  --green:     #A5D6A7;
+  --purple:    #CE93D8;
+  --yellow:    #FFE082;
+  --radius:    20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,112,67,0.07) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(244,143,177,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255,152,0,0.05) 0%, transparent 70%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px 60px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── Scattered flower background ── */
+.bg-flowers {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.bg-flowers span {
+  position: absolute;
+  font-size: 28px;
+  opacity: 0.18;
+  animation: floatFlower linear infinite;
+  user-select: none;
+}
+@keyframes floatFlower {
+  0%   { transform: translateY(0px) rotate(0deg); opacity: 0.18; }
+  50%  { opacity: 0.28; }
+  100% { transform: translateY(-20px) rotate(15deg); opacity: 0.18; }
+}
+
+.app {
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.logo-ring {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--pink));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 34px;
+  box-shadow: 0 8px 24px rgba(255,112,67,0.3), 0 0 0 6px rgba(255,112,67,0.1);
+  animation: bobble 3s ease-in-out infinite;
+}
+@keyframes bobble {
+  0%,100% { transform: translateY(0px) rotate(-3deg); }
+  50%      { transform: translateY(-6px) rotate(3deg); }
+}
+.header h1 {
+  font-size: 26px; font-weight: 900;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+.header p { font-size: 13px; color: var(--muted); margin-top: 4px; font-weight: 600; }
+
+/* ── Step Indicator ── */
+.steps {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 28px;
+}
+.step-dot {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2.5px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: var(--muted);
+  transition: all 0.3s ease; position: relative; z-index: 1;
+  background: white;
+}
+.step-dot.active { border-color: var(--accent); background: rgba(255,112,67,0.12); color: var(--accent); }
+.step-dot.done   { border-color: var(--green); background: rgba(165,214,167,0.2); color: #2E7D32; }
+.step-line { flex: 1; height: 3px; background: var(--border2); max-width: 52px; transition: background 0.3s ease; border-radius: 99px; }
+.step-line.done { background: var(--green); }
+
+/* ── Card ── */
+.card {
+  background: var(--surface);
+  border: 2px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 20px rgba(109,76,65,0.08), 0 2px 6px rgba(109,76,65,0.05);
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--pink), var(--yellow), var(--green));
+}
+.card-fancy { outline: 2px dashed var(--border); outline-offset: -10px; }
+
+/* ── Labels ── */
+.step-label {
+  font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+.step-title  { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.step-desc   { font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.6; font-weight: 600; }
+
+/* ── Name Entry & Number Entry ── */
+.name-input-area {
+  display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;
+}
+.name-row {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg);
+  border: 2px solid var(--border2);
+  border-radius: 14px;
+  padding: 10px 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.name-row:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255,112,67,0.12);
+}
+.name-row .name-num {
+  font-size: 12px; font-weight: 800; color: var(--muted);
+  min-width: 22px; text-align: center;
+}
+.name-row input {
+  flex: 1; background: transparent; border: none; outline: none;
+  font-family: inherit; font-size: 15px; font-weight: 700; color: var(--text);
+  width: 100%;
+}
+.name-row input::placeholder { color: var(--border); }
+.name-row .del-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: var(--muted); line-height: 1;
+  padding: 0 2px; transition: color 0.2s;
+}
+.name-row .del-btn:hover { color: #e53935; }
+
+/* ── Next / Add buttons ── */
+.add-next-btn {
+  width: 100%; padding: 12px 14px;
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  background: transparent;
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  color: var(--muted); cursor: pointer;
+  transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.add-next-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(255,112,67,0.06); }
+
+/* ── Buttons ── */
+.btn {
+  width: 100%; padding: 14px; border-radius: 14px; border: none;
+  font-family: inherit; font-size: 15px; font-weight: 800;
+  cursor: pointer; transition: all 0.2s ease; letter-spacing: 0.3px;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #FF5722);
+  color: white; box-shadow: 0 4px 18px rgba(255,112,67,0.35);
+  font-size: 17px; padding: 16px;
+}
+.btn-primary:hover { box-shadow: 0 6px 24px rgba(255,112,67,0.5); transform: translateY(-1px); }
+.btn-dl   { background: linear-gradient(135deg, #388E3C, #66BB6A); color: white; box-shadow: 0 4px 18px rgba(56,142,60,0.3); }
+.btn-share { background: linear-gradient(135deg, var(--pink), #F06292); color: white; box-shadow: 0 4px 18px rgba(244,143,177,0.35); }
+.btn-ghost {
+  background: transparent; border: 2px solid var(--border2);
+  color: var(--muted); font-size: 13px; padding: 10px;
+}
+.btn-ghost:hover { border-color: var(--border); color: var(--text); }
+.btn-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.btn-row .btn { flex: 1; }
+
+.input-hint { font-size: 12px; color: var(--muted); margin-top: 8px; font-weight: 600; text-align: center;}
+#char-count  { color: var(--accent); font-weight: 800; }
+
+/* ── Step 2: Shuffle Animation ── */
+#step-shuffle { display: none; text-align: center; padding: 60px 20px; }
+.shuffle-icon {
+  font-size: 60px; margin-bottom: 20px;
+  animation: shake 0.4s infinite alternate;
+  display: inline-block;
+}
+@keyframes shake {
+  0% { transform: rotate(-15deg) scale(1); }
+  100% { transform: rotate(15deg) scale(1.1); }
+}
+.shuffle-text { font-size: 20px; font-weight: 900; color: var(--accent); }
+.shuffle-sub { font-size: 13px; color: var(--muted); font-weight: 600; margin-top: 5px; }
+
+/* ── Step 3: Result ── */
+#step-result { display: none; }
+.result-header { text-align: center; margin-bottom: 22px; }
+.result-header .trophy-icon { font-size: 52px; margin-bottom: 8px; }
+.result-header h2 { font-size: 22px; font-weight: 900; }
+.result-header p  { font-size: 13px; color: var(--muted); margin-top: 4px; font-weight: 600; }
+
+/* ── Result Screenshot card ── */
+#result-screenshot {
+  background: #FFF8F0;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 14px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(109,76,65,0.12);
+}
+#result-screenshot::after {
+  content: '';
+  position: absolute; inset: 8px;
+  border: 2px dashed var(--border);
+  border-radius: 14px; pointer-events: none;
+}
+
+.rsc-header {
+  padding: 20px 24px 16px; text-align: center;
+  border-bottom: 1px solid var(--border2);
+  background: linear-gradient(135deg, rgba(255,112,67,0.08), rgba(244,143,177,0.08));
+}
+.rsc-title    { font-size: 17px; font-weight: 900; color: var(--text); letter-spacing: 0.5px; }
+.rsc-subtitle { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 600; }
+
+/* Grid for teams */
+.rsc-teams-grid {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+}
+.team-card-res {
+  background: white;
+  border: 2px solid var(--border2);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(109,76,65,0.05);
+}
+.team-header-res {
+  padding: 8px 10px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 13px;
+  border-bottom: 2px dashed var(--border2);
+  background: rgba(255,255,255,0.5);
+}
+.team-members-res {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.team-member-item {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,0.04);
+  text-align: center;
+}
+.team-member-item:last-child { border-bottom: none; }
+
+.rsc-footer {
+  text-align: center; font-size: 10px; color: var(--muted);
+  padding: 0 20px 16px; letter-spacing: 0.5px; font-weight: 700;
+}
+
+/* ── Confetti ── */
+.confetti-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
+.c-piece { position: absolute; width: 8px; height: 8px; border-radius: 2px; animation: fall linear forwards; }
+@keyframes fall {
+  0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+.tags-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; justify-content: center;}
+.tag {
+  padding: 5px 13px; border-radius: 999px;
+  font-size: 12px; font-weight: 700;
+  border: 1.5px solid var(--border2);
+  color: var(--muted); background: var(--bg);
+}
+</style>
+</head>
+<body>
+
+<div class="bg-flowers" id="bg-flowers"></div>
+
+<div class="app">
+
+  <div class="header">
+    <div class="logo-ring">👥</div>
+    <h1>Elara Acak Tim 🌸</h1>
+    <p>Bagi kelompok secara adil, cepat, & estetik!</p>
+  </div>
+
+  <div class="steps" id="step-indicator">
+    <div class="step-dot active" id="sdot-1">1</div>
+    <div class="step-line" id="sline-1"></div>
+    <div class="step-dot" id="sdot-2">2</div>
+    <div class="step-line" id="sline-2"></div>
+    <div class="step-dot" id="sdot-3">3</div>
+  </div>
+
+  <div id="step-input">
+    
+    <div class="card card-fancy">
+      <div class="step-label">🎯 Pengaturan</div>
+      <div class="step-title">Mau dibagi berapa kelompok?</div>
+      <div class="name-row" style="margin-top: 12px;">
+        <span class="name-num">📦</span>
+        <input type="number" id="team-count" value="2" min="1" placeholder="Masukkan angka...">
+      </div>
+    </div>
+
+    <div class="card card-fancy" id="team-names-card">
+      <div class="step-label">🏷️ Nama Kelompok</div>
+      <div class="step-title">Beri nama tiap kelompok</div>
+      <div class="step-desc">Tulis nama kelompoknya (misal: Harimau, Mawar, dll).</div>
+      <div class="name-input-area" id="team-names-list">
+        </div>
+    </div>
+
+    <div class="card card-fancy">
+      <div class="step-label">🌷 Data Peserta</div>
+      <div class="step-title">Masukkan nama peserta</div>
+      <div class="step-desc">Tulis nama satu per satu, klik <strong>Pilihan Berikutnya</strong> untuk menambah orang.</div>
+
+      <div class="name-input-area" id="name-list">
+        </div>
+
+      <button class="add-next-btn" onclick="addNameField()">
+        ✨ Pilihan Berikutnya
+      </button>
+
+      <div class="input-hint">🌸 <span id="char-count">0</span> nama terdeteksi</div>
+      <div class="tags-wrap" id="preview-tags"></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="startShuffle()">✨ ACAK KELOMPOK! ✨</button>
+  </div>
+
+  <div id="step-shuffle">
+    <div class="shuffle-icon">🪄</div>
+    <div class="shuffle-text">Sedang Mengacak...</div>
+    <div class="shuffle-sub">Membagi tim secara adil 🌸</div>
+  </div>
+
+  <div id="step-result">
+    <div class="result-header">
+      <div class="trophy-icon">🎉</div>
+      <h2>Selesai Dibagi!</h2>
+      <p>Simpan atau bagikan hasil kelompok ini</p>
+    </div>
+
+    <div id="result-screenshot">
+      <div class="rsc-header">
+        <div class="rsc-title">🌸 Elara Acak Tim — Hasil Pembagian</div>
+        <div class="rsc-subtitle" id="rsc-date"></div>
+      </div>
+
+      <div class="rsc-teams-grid" id="rsc-teams-grid">
+        </div>
+
+      <div class="rsc-footer">✨ Dibuat dengan Elara Acak Tim 🌸 farielxyz.github.io/Elara_AcakTim/</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-dl" onclick="downloadResult()">📥 Unduh Gambar</button>
+      <button class="btn btn-share" onclick="shareResult()">📤 Share</button>
+    </div>
+    <button class="btn btn-ghost" onclick="resetAll()">🔄 Mulai Ulang & Acak Lagi</button>
+  </div>
+
+</div>
+
+<div class="confetti-wrap" id="confetti-wrap"></div>
+
+<script>
+/* ────────────────────────────────────────
+   BACKGROUND FLOWERS
+──────────────────────────────────────── */
+(function buildBgFlowers() {
+  const container = document.getElementById('bg-flowers');
+  const flowers = ['🌸','💮','✨','🌺','💖','🌼','⭐','🌷','💫','🎀'];
+  for (let i = 0; i < 30; i++) {
+    const s = document.createElement('span');
+    s.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+    const size = 16 + Math.random() * 24;
+    s.style.cssText = `
+      left: ${Math.random()*100}%;
+      top:  ${Math.random()*100}%;
+      font-size: ${size}px;
+      animation-duration: ${4 + Math.random()*6}s;
+      animation-delay: ${Math.random()*5}s;
+    `;
+    container.appendChild(s);
+  }
+})();
+
+/* ────────────────────────────────────────
+   NAMA KELOMPOK (DYNAMIC)
+──────────────────────────────────────── */
+document.getElementById('team-count').addEventListener('input', function(e) {
+  let count = parseInt(this.value) || 1;
+  if(count < 1) count = 1;
+  renderTeamNameInputs(count);
+});
+
+function renderTeamNameInputs(count) {
+  const list = document.getElementById('team-names-list');
+  const existingInputs = list.querySelectorAll('input');
+  const existingValues = Array.from(existingInputs).map(el => el.value);
+
+  list.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const row = document.createElement('div');
+    row.className = 'name-row';
+    const val = existingValues[i] !== undefined ? existingValues[i] : `Kelompok ${i + 1}`;
+    row.innerHTML = `
+      <span class="name-num">🏷️</span>
+      <input type="text" placeholder="Nama Kelompok ${i + 1}..." value="${val}" class="team-name-input">
+    `;
+    list.appendChild(row);
+  }
+}
+
+/* ────────────────────────────────────────
+   STEP 1 — Dynamic name entry
+──────────────────────────────────────── */
+function renderNameList() {
+  const list = document.getElementById('name-list');
+  list.innerHTML = '';
+  const names = getNames();
+  const count = Math.max(1, names.length);
+  for (let i = 0; i < count; i++) {
+    const row = document.createElement('div');
+    row.className = 'name-row';
+    row.innerHTML = `
+      <span class="name-num">${i + 1}</span>
+      <input type="text" placeholder="Ketik nama di sini..." value="${(names[i] || '').replace(/"/g, '&quot;')}"
+        oninput="updatePreview()"
+        onkeydown="onNameKeydown(event, ${i})"
+        id="ni-${i}">
+      ${count > 1 ? `<button class="del-btn" onclick="deleteName(${i})">×</button>` : ''}
+    `;
+    list.appendChild(row);
+  }
+  updatePreview();
+}
+
+function getNames() {
+  const inputs = document.querySelectorAll('#name-list input');
+  return Array.from(inputs).map(el => el.value.trim()).filter(v => v.length > 0);
+}
+
+function onNameKeydown(e, idx) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    addNameField();
+  }
+}
+
+function addNameField() {
+  const inputs = document.querySelectorAll('#name-list input');
+  
+  // VALIDASI: Cek apakah ada input nama yang masih kosong
+  for (let i = 0; i < inputs.length; i++) {
+    if (inputs[i].value.trim() === '') {
+      alert('⚠️ Isi dulu nama yang masih kosong sebelum menambah kolom baru ya!');
+      inputs[i].focus(); // Pindahkan kursor ke kolom yang kosong
+      return; // Berhenti di sini, jangan buat kolom baru
+    }
+  }
+
+  const newIdx = inputs.length;
+  const list = document.getElementById('name-list');
+  const row = document.createElement('div');
+  row.className = 'name-row';
+  row.innerHTML = `
+    <span class="name-num">${newIdx + 1}</span>
+    <input type="text" placeholder="Ketik nama di sini..." value=""
+      oninput="updatePreview()"
+      onkeydown="onNameKeydown(event, ${newIdx})"
+      id="ni-${newIdx}">
+    <button class="del-btn" onclick="deleteNameDynamic(this)">×</button>
+  `;
+  list.appendChild(row);
+  renumberRows();
+  document.getElementById(`ni-${newIdx}`)?.focus();
+  updatePreview();
+}
+
+function deleteName(idx) {
+  const rows = document.querySelectorAll('#name-list input');
+  const vals = Array.from(rows).map(el => el.value);
+  vals.splice(idx, 1);
+  rebuildFromValues(vals);
+}
+
+function deleteNameDynamic(btn) {
+  const row = btn.closest('.name-row');
+  row.remove();
+  renumberRows();
+  updatePreview();
+}
+
+function rebuildFromValues(vals) {
+  const list = document.getElementById('name-list');
+  list.innerHTML = '';
+  const count = Math.max(1, vals.length);
+  for (let i = 0; i < count; i++) {
+    const row = document.createElement('div');
+    row.className = 'name-row';
+    row.innerHTML = `
+      <span class="name-num">${i + 1}</span>
+      <input type="text" placeholder="Ketik nama di sini..." value="${(vals[i] || '').replace(/"/g, '&quot;')}"
+        oninput="updatePreview()"
+        onkeydown="onNameKeydown(event, ${i})"
+        id="ni-${i}">
+      ${count > 1 ? `<button class="del-btn" onclick="deleteNameDynamic(this)">×</button>` : ''}
+    `;
+    list.appendChild(row);
+  }
+  renumberRows();
+  updatePreview();
+}
+
+function renumberRows() {
+  const rows = document.querySelectorAll('#name-list .name-row');
+  rows.forEach((row, i) => {
+    const num = row.querySelector('.name-num');
+    if (num) num.textContent = i + 1;
+  });
+}
+
+function updatePreview() {
+  const names = getNames();
+  document.getElementById('char-count').textContent = names.length;
+  const wrap = document.getElementById('preview-tags');
+  wrap.innerHTML = names.map(n => `<span class="tag">${n}</span>`).join('');
+}
+
+/* ────────────────────────────────────────
+   STEP NAVIGATION & SHUFFLE LOGIC
+──────────────────────────────────────── */
+function setStep(n) {
+  document.getElementById('step-input').style.display   = n === 1 ? 'block' : 'none';
+  document.getElementById('step-shuffle').style.display = n === 2 ? 'block' : 'none';
+  document.getElementById('step-result').style.display  = n === 3 ? 'block' : 'none';
+
+  ['sdot-1','sdot-2','sdot-3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.className = 'step-dot';
+    if (i + 1 < n) el.classList.add('done');
+    else if (i + 1 === n) el.classList.add('active');
+  });
+  ['sline-1','sline-2'].forEach((id, i) => {
+    document.getElementById(id).className = 'step-line' + (i + 1 < n ? ' done' : '');
+  });
+}
+
+function startShuffle() {
+  const names = getNames();
+  const teamCount = parseInt(document.getElementById('team-count').value) || 0;
+
+  if (teamCount < 1) {
+    alert('⚠️ Jumlah kelompok minimal 1!');
+    return;
+  }
+  if (names.length < teamCount) {
+    alert(`⚠️ Ada ${teamCount} kelompok tapi hanya ${names.length} nama! Masukkan lebih banyak nama.`);
+    return;
+  }
+
+  // Ambil nama-nama kelompok kustom
+  const teamNameInputs = document.querySelectorAll('.team-name-input');
+  const customTeamNames = Array.from(teamNameInputs).map((el, i) => el.value.trim() || `Kelompok ${i + 1}`);
+
+  // Pindah ke layar animasi (Step 2)
+  setStep(2);
+
+  // Proses Acak (Fisher-Yates)
+  let shuffled = [...names];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  // Distribusikan ke dalam kelompok
+  let teams = Array.from({ length: teamCount }, () => []);
+  shuffled.forEach((name, idx) => {
+    teams[idx % teamCount].push(name);
+  });
+
+  // Tunda selama 2.5 detik untuk efek animasi imut
+  setTimeout(() => {
+    renderResultBoard(teams, customTeamNames);
+    setStep(3);
+    launchConfetti();
+  }, 2500);
+}
+
+function renderResultBoard(teams, customTeamNames) {
+  const grid = document.getElementById('rsc-teams-grid');
+  grid.innerHTML = '';
+
+  // Palette warna pastel lucu untuk tim
+  const themeColors = [
+    { text: '#E65100', bg: 'rgba(230,81,0,0.06)', border: 'rgba(230,81,0,0.25)' },
+    { text: '#5D4037', bg: 'rgba(93,64,55,0.06)', border: 'rgba(93,64,55,0.22)' },
+    { text: '#8D6E63', bg: 'rgba(141,110,99,0.06)', border: 'rgba(141,110,99,0.22)' },
+    { text: '#7B1FA2', bg: 'rgba(123,31,162,0.05)', border: 'rgba(123,31,162,0.2)' },
+    { text: '#0277BD', bg: 'rgba(2,119,189,0.05)', border: 'rgba(2,119,189,0.2)' },
+    { text: '#2E7D32', bg: 'rgba(46,125,50,0.05)', border: 'rgba(46,125,50,0.2)' }
+  ];
+
+  teams.forEach((teamArray, i) => {
+    const theme = themeColors[i % themeColors.length];
+    const teamNameTitle = customTeamNames[i] || `Kelompok ${i + 1}`;
+    
+    // Build member list
+    let membersHtml = teamArray.map(m => `<div class="team-member-item">${m}</div>`).join('');
+
+    const card = `
+      <div class="team-card-res" style="border-color:${theme.border}; background:${theme.bg}">
+        <div class="team-header-res" style="color:${theme.text}; border-bottom-color:${theme.border}">
+          ${teamNameTitle}
+        </div>
+        <div class="team-members-res">
+          ${membersHtml}
+        </div>
+      </div>
+    `;
+    grid.innerHTML += card;
+  });
+
+  // Set Tanggal
+  const now = new Date();
+  document.getElementById('rsc-date').textContent =
+    now.toLocaleDateString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric' }) +
+    ' • ' + now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+}
+
+/* ────────────────────────────────────────
+   CONFETTI
+──────────────────────────────────────── */
+function launchConfetti() {
+  const wrap = document.getElementById('confetti-wrap');
+  const cols = ['#FF8A65','#F48FB1','#81D4FA','#A5D6A7','#CE93D8','#FFE082','#80DEEA','#FFAB91'];
+  for (let i = 0; i < 70; i++) {
+    const p = document.createElement('div');
+    p.className = 'c-piece';
+    p.style.cssText = `
+      left: ${Math.random()*100}%;
+      background: ${cols[Math.floor(Math.random()*cols.length)]};
+      width:  ${5 + Math.random()*7}px;
+      height: ${5 + Math.random()*7}px;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      animation-duration: ${1.5 + Math.random()*2.5}s;
+      animation-delay: ${Math.random()*0.6}s;
+    `;
+    wrap.appendChild(p);
+    setTimeout(() => p.remove(), 5000);
+  }
+}
+
+/* ────────────────────────────────────────
+   DOWNLOAD & SHARE
+──────────────────────────────────────── */
+function downloadResult() {
+  const el = document.getElementById('result-screenshot');
+  html2canvas(el, { scale: 3, backgroundColor: '#FFF8F0', useCORS: true, logging: false }).then(c => {
+    const a = document.createElement('a');
+    a.download = 'elara-acak-tim-hasil.png';
+    a.href = c.toDataURL('image/png');
+    a.click();
+  });
+}
+
+async function shareResult() {
+  const el = document.getElementById('result-screenshot');
+  const c  = await html2canvas(el, { scale: 3, backgroundColor: '#FFF8F0', useCORS: true, logging: false });
+
+  // Teks dan Link Sesuai Permintaan
+  const shareText = 'Silahkan Mencoba Acak Tim Elara AI https://farielxyz.github.io/Elara_AcakTim/';
+
+  c.toBlob(async (blob) => {
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'elara-acak-tim.png', { type: 'image/png' })] })) {
+      try {
+        await navigator.share({
+          title: 'Elara Acak Tim — Hasil Pembagian',
+          text:  shareText,
+          files: [new File([blob], 'elara-acak-tim.png', { type: 'image/png' })]
+        });
+        return;
+      } catch(e) { /* fallback */ }
+    }
+    // Fallback: download + copy text
+    const a = document.createElement('a');
+    a.download = 'elara-acak-tim-share.png';
+    a.href = URL.createObjectURL(blob);
+    a.click();
+    try { 
+      await navigator.clipboard.writeText(shareText); 
+      alert('Gambar diunduh!\nTeks share sudah disalin ke clipboard:\n\n' + shareText); 
+    }
+    catch { alert('Gambar diunduh! Teks share:\n\n' + shareText); }
+  }, 'image/png');
+}
+
+function resetAll() {
+  setStep(1);
+}
+
+/* ────────────────────────────────────────
+   INIT
+──────────────────────────────────────── */
+renderTeamNameInputs(parseInt(document.getElementById('team-count').value) || 2);
+renderNameList();
+setStep(1);
+</script>
+</body>
+</html>
